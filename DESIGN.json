@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-21T10:15:00+02:00",
+  "title": "Design System: BaseDePrompt",
+  "extensions": {
+    "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "Violet fonctionnel",
+        "canonical": "oklch(55% 0.22 285)",
+        "tonalRamp": ["oklch(18% 0.06 285)", "oklch(28% 0.1 285)", "oklch(38% 0.15 285)", "oklch(48% 0.2 285)", "oklch(58% 0.2 285)", "oklch(70% 0.15 285)", "oklch(84% 0.08 285)", "oklch(95% 0.03 285)"]
+      },
+      "canvas": {
+        "role": "neutral",
+        "displayName": "Brume violette",
+        "canonical": "oklch(97.8% 0.008 278)",
+        "tonalRamp": ["oklch(18% 0.008 278)", "oklch(30% 0.008 278)", "oklch(42% 0.008 278)", "oklch(54% 0.008 278)", "oklch(66% 0.008 278)", "oklch(78% 0.008 278)", "oklch(90% 0.008 278)", "oklch(97.8% 0.008 278)"]
+      },
+      "success": {
+        "role": "semantic",
+        "displayName": "Vert confirmation",
+        "canonical": "oklch(54% 0.15 154)",
+        "tonalRamp": ["oklch(18% 0.05 154)", "oklch(28% 0.08 154)", "oklch(38% 0.11 154)", "oklch(48% 0.14 154)", "oklch(58% 0.14 154)", "oklch(70% 0.11 154)", "oklch(84% 0.06 154)", "oklch(95% 0.025 154)"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Titre produit", "purpose": "Hiérarchie principale sans caractère décoratif." },
+      "body": { "displayName": "Interface", "purpose": "Lecture, contrôles et contenu long." }
+    },
+    "shadows": [
+      { "name": "ambient-low", "value": "0 1px 2px rgb(25 20 45 / 4%), 0 12px 32px rgb(25 20 45 / 6%)", "purpose": "Panneau de recherche et prompt ouvert." },
+      { "name": "floating-feedback", "value": "0 14px 40px rgb(25 20 45 / 16%)", "purpose": "Confirmation de copie." }
+    ],
+    "motion": [
+      { "name": "state-fast", "value": "180ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Survol, focus et rotation du chevron." },
+      { "name": "feedback", "value": "2200ms", "purpose": "Durée visible de la confirmation de copie." }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "470px" },
+      { "name": "compact", "value": "760px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Search Field",
+      "kind": "input",
+      "refersTo": "search-field",
+      "description": "Point d'entrée principal de la bibliothèque.",
+      "html": "<label class=\"ds-search\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"></circle><path d=\"m20 20-4-4\"></path></svg><span class=\"ds-sr\">Rechercher</span><input placeholder=\"Ex. quiz, Qualiopi, support…\"></label>",
+      "css": ".ds-search{min-height:64px;display:flex;align-items:center;gap:14px;padding:0 18px;border:1px solid var(--border-strong,#cbc6d4);border-radius:20px;background:var(--surface,#fdfcff);color:var(--ink,#171523)}.ds-search:focus-within{border-color:var(--accent,#6752e8);box-shadow:0 0 0 4px rgb(103 82 232 / 10%)}.ds-search svg{width:22px;fill:none;stroke:#77727f;stroke-width:1.8}.ds-search input{min-width:0;flex:1;border:0;outline:0;background:transparent;font:inherit;color:inherit}.ds-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}"
+    },
+    {
+      "name": "Filter Select",
+      "kind": "input",
+      "description": "Filtre natif explicite et stable.",
+      "html": "<label class=\"ds-filter\"><span>SESSION</span><select><option>Toutes les sessions</option></select></label>",
+      "css": ".ds-filter{display:grid;gap:5px;color:var(--ink,#171523);font-family:system-ui,sans-serif}.ds-filter span{padding-left:4px;color:#62606d;font-size:11px;font-weight:800;letter-spacing:.06em}.ds-filter select{min-height:45px;padding:0 40px 0 14px;border:1px solid #e4e1ea;border-radius:14px;background:#f2f0f6;color:inherit;font:650 14px system-ui}.ds-filter select:focus-visible{outline:3px solid rgb(103 82 232 / 45%)}"
+    },
+    {
+      "name": "Copy Button",
+      "kind": "button",
+      "refersTo": "copy-button",
+      "description": "Action primaire locale avec confirmation immédiate.",
+      "html": "<button class=\"ds-copy\"><svg viewBox=\"0 0 24 24\"><rect x=\"8\" y=\"8\" width=\"11\" height=\"11\" rx=\"2\"></rect><path d=\"M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2\"></path></svg>Copier</button>",
+      "css": ".ds-copy{min-height:43px;display:inline-flex;align-items:center;gap:8px;padding:10px 13px;border:0;border-radius:14px;background:var(--surface-accent,#edeaff);color:var(--accent-strong,#5840d6);font:750 14px system-ui;cursor:pointer}.ds-copy:hover{background:#e4dfff}.ds-copy:focus-visible{outline:3px solid rgb(103 82 232 / 45%)}.ds-copy:active{transform:translateY(1px)}.ds-copy svg{width:17px;fill:none;stroke:currentColor;stroke-width:1.8}"
+    },
+    {
+      "name": "Prompt Item",
+      "kind": "card",
+      "refersTo": "prompt-item",
+      "description": "Unité de résultat, conçue pour la décision avant la lecture longue.",
+      "html": "<article class=\"ds-prompt\"><div><span class=\"ds-chip\">Jour 1 · Séquence 2</span><h3>Améliorateur de Prompt</h3><p>Méta-prompt pour construire des prompts optimisés.</p></div><button>Voir le prompt</button></article>",
+      "css": ".ds-prompt{display:grid;grid-template-columns:1fr auto;gap:24px;padding:23px 25px;border:1px solid #e4e1ea;border-radius:20px;background:var(--surface,#fdfcff);color:var(--ink,#171523);font-family:system-ui}.ds-prompt:hover{border-color:#cbc6d4;box-shadow:0 12px 32px rgb(25 20 45 / 6%)}.ds-prompt h3{margin:9px 0 4px;font-size:19px}.ds-prompt p{margin:0;color:#62606d}.ds-prompt button{align-self:center;min-height:43px;padding:10px 13px;border:1px solid #e4e1ea;border-radius:14px;background:transparent;font-weight:700}.ds-prompt button:focus-visible{outline:3px solid rgb(103 82 232 / 45%)}.ds-chip{padding:4px 9px;border-radius:999px;background:#edeaff;color:#5840d6;font-size:11px;font-weight:700}"
+    },
+    {
+      "name": "Session Chip",
+      "kind": "chip",
+      "description": "Repère court de localisation dans la formation.",
+      "html": "<span class=\"ds-chip\">Jour 2 · Séquence 3</span>",
+      "css": ".ds-chip{display:inline-flex;align-items:center;min-height:25px;padding:3px 9px;border-radius:999px;background:var(--surface-accent,#edeaff);color:var(--accent-strong,#5840d6);font:700 12px system-ui}"
+    },
+    {
+      "name": "Copy Toast",
+      "kind": "custom",
+      "description": "Retour accessible après copie.",
+      "html": "<div class=\"ds-toast\" role=\"status\"><svg viewBox=\"0 0 24 24\"><path d=\"m5 12 4 4L19 6\"></path></svg>Prompt copié</div>",
+      "css": ".ds-toast{display:inline-flex;align-items:center;gap:10px;padding:14px 16px;border-radius:14px;background:var(--ink,#171523);color:var(--surface,#fdfcff);box-shadow:0 14px 40px rgb(25 20 45 / 16%);font:700 14px system-ui}.ds-toast svg{width:18px;fill:none;stroke:#67c891;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Le pupitre calme",
+    "overview": "L'interface accompagne un formateur qui cherche une ressource pendant une journée de travail ou devant un groupe. Elle privilégie la lumière, la lisibilité et les repères familiers.",
+    "keyCharacteristics": [
+      "Une recherche centrale qui ressemble à un outil, pas à un héros marketing.",
+      "Une liste verticale stable qui révèle progressivement le contenu long.",
+      "Une couleur violette réservée aux actions, sélections et repères de session.",
+      "Une densité confortable sur ordinateur et une lecture linéaire sur mobile."
+    ],
+    "rules": [
+      { "name": "The Task First Rule", "body": "Chercher, filtrer et copier restent les actions les plus évidentes.", "section": "overview" },
+      { "name": "The Functional Violet Rule", "body": "Le violet signale une action, une sélection ou une information de session.", "section": "colors" },
+      { "name": "The Earned Shadow Rule", "body": "Une ombre marque une zone active, flottante ou ouverte.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do montrer d'abord le nom, l'usage et la session, puis révéler le prompt complet.",
+      "Do conserver les filtres dans un ordre stable : recherche, session, compétence."
+    ],
+    "donts": [
+      "Don't reproduire les interfaces d'administration datées.",
+      "Don't ouvrir toutes les longues cartes par défaut.",
+      "Don't utiliser une fenêtre modale pour consulter un prompt."
+    ]
+  }
+}

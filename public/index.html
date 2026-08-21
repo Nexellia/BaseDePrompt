@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'"
+    />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta
+      name="description"
+      content="Recherchez, consultez et copiez les prompts de votre formation."
+    />
+    <meta name="theme-color" content="#f7f6fb" />
+    <title>Bibliothèque de prompts | Nexellia</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Aller au contenu</a>
+
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="brand" href="./" aria-label="Bibliothèque de prompts, accueil">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" role="img">
+              <path d="M16 4.5c.9 6.8 4.7 10.6 11.5 11.5C20.7 16.9 16.9 20.7 16 27.5 15.1 20.7 11.3 16.9 4.5 16 11.3 15.1 15.1 11.3 16 4.5Z" />
+              <path d="M25.5 3.5v6M22.5 6.5h6" />
+            </svg>
+          </span>
+          <span>
+            <strong>Nexellia</strong>
+            <small>Bibliothèque de prompts</small>
+          </span>
+        </a>
+        <span class="sync-status">
+          <span aria-hidden="true"></span>
+          Synchronisée avec Excel
+        </span>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero shell" aria-labelledby="page-title">
+        <p class="eyebrow">Votre boîte à outils IA</p>
+        <h1 id="page-title">Le bon prompt, au bon moment.</h1>
+        <p class="hero-copy">
+          Recherchez dans la bibliothèque de votre formation, ouvrez le prompt utile et copiez-le en un geste.
+        </p>
+      </section>
+
+      <section class="library shell" aria-label="Recherche dans la bibliothèque">
+        <div class="discovery-panel">
+          <div class="search-field">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <circle cx="11" cy="11" r="7"></circle>
+              <path d="m20 20-4-4"></path>
+            </svg>
+            <label for="search">Rechercher un prompt</label>
+            <input
+              id="search"
+              type="search"
+              autocomplete="off"
+              placeholder="Ex. quiz, Qualiopi, support, persona…"
+              aria-describedby="search-hint"
+            />
+            <kbd aria-hidden="true">/</kbd>
+          </div>
+
+          <div class="filter-row">
+            <div class="filter-control">
+              <label for="session-filter">Session</label>
+              <select id="session-filter">
+                <option value="">Toutes les sessions</option>
+              </select>
+            </div>
+            <div class="filter-control">
+              <label for="competence-filter">Compétence</label>
+              <select id="competence-filter" disabled>
+                <option value="">À renseigner dans Excel</option>
+              </select>
+            </div>
+            <button class="reset-button" id="reset-filters" type="button" hidden>
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M4 7h16M7 12h10M10 17h4"></path>
+              </svg>
+              Effacer les filtres
+            </button>
+          </div>
+        </div>
+
+        <div class="results-toolbar">
+          <p id="result-count" class="result-count" aria-live="polite">Chargement des prompts…</p>
+          <p id="search-hint" class="keyboard-hint">Entrée pour ouvrir le premier résultat</p>
+        </div>
+
+        <div id="loading-state" class="loading-state" aria-hidden="true">
+          <span></span><span></span><span></span>
+        </div>
+
+        <div id="error-state" class="message-state" hidden>
+          <span class="message-icon" aria-hidden="true">!</span>
+          <h2>La bibliothèque ne peut pas être chargée.</h2>
+          <p>Actualisez la page dans quelques instants.</p>
+        </div>
+
+        <div id="empty-state" class="message-state" hidden>
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7"></circle>
+            <path d="m20 20-4-4"></path>
+          </svg>
+          <h2>Aucun prompt ne correspond.</h2>
+          <p>Essayez un autre mot-clé ou effacez les filtres.</p>
+          <button id="empty-reset" class="secondary-button" type="button">Voir tous les prompts</button>
+        </div>
+
+        <div id="results" class="prompt-list"></div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell footer-inner">
+        <p>Bibliothèque de formation Nexellia</p>
+        <p id="data-version">Source Excel</p>
+      </div>
+    </footer>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden>
+      <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"></path></svg>
+      <span>Prompt copié</span>
+    </div>
+
+    <template id="prompt-template">
+      <article class="prompt-item">
+        <div class="prompt-summary">
+          <div class="prompt-main">
+            <div class="prompt-meta"></div>
+            <h2 class="prompt-title"></h2>
+            <p class="prompt-description"></p>
+          </div>
+          <div class="prompt-actions">
+            <button class="copy-button" type="button">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <rect x="8" y="8" width="11" height="11" rx="2"></rect>
+                <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
+              </svg>
+              <span>Copier</span>
+            </button>
+            <button class="expand-button" type="button" aria-expanded="false">
+              <span>Voir le prompt</span>
+              <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5"></path></svg>
+            </button>
+          </div>
+        </div>
+        <div class="prompt-content" hidden>
+          <div class="prompt-render"></div>
+          <dl class="prompt-context"></dl>
+        </div>
+      </article>
+    </template>
+  </body>
+</html>
