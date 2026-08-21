@@ -95,9 +95,9 @@ L'élévation est discrète. Le panneau de recherche et les prompts ouverts reç
 
 ## Components
 
-- **En-tête de marque.** Compact, non collant, avec l'état de synchronisation visible seulement lorsque l'espace le permet.
+- **En-tête.** Compact, non collant, limité au nom de la bibliothèque.
 - **Recherche.** Champ de 64 px sur ordinateur, icône à gauche, raccourci clavier à droite et anneau de focus violet.
-- **Filtres.** Sélecteurs natifs avec libellé explicite. Un filtre sans donnée est désactivé et explique sa source attendue.
+- **Filtres et tri.** Sélecteurs natifs avec libellé explicite : session, module, compétence et ordre d'affichage.
 - **Prompt.** Ligne verticale bordée, contenu décisionnel à gauche, actions à droite. Sur mobile, les actions occupent toute la largeur.
 - **Copie.** Bouton violet doux qui passe brièvement à un état de succès vert et déclenche une annonce accessible.
 - **Déploiement du prompt.** Ouverture en ligne, jamais en fenêtre modale. Le chevron pivote ; le contenu apparaît sans animation de mise en page.
@@ -109,7 +109,7 @@ L'élévation est discrète. Le panneau de recherche et les prompts ouverts reç
 ### Do:
 
 - **Do** montrer d'abord le nom, l'usage et la session, puis révéler le prompt complet.
-- **Do** conserver les filtres dans un ordre stable : recherche, session, compétence.
+- **Do** conserver les contrôles dans un ordre stable : recherche, session, module, compétence, tri.
 - **Do** utiliser des libellés français explicites et une confirmation après copie.
 - **Do** respecter les zones tactiles et le focus visible sur tous les contrôles.
 

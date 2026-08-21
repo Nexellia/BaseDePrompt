@@ -13,10 +13,10 @@
       content="Recherchez, consultez et copiez les prompts de votre formation."
     />
     <meta name="theme-color" content="#f7f6fb" />
-    <title>Bibliothèque de prompts | Nexellia</title>
+    <title>Bibliothèque de prompts</title>
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="./styles.css" />
-    <script src="./app.js" defer></script>
+    <link rel="stylesheet" href="./styles.css?v=20260821-2" />
+    <script src="./app.js?v=20260821-2" defer></script>
   </head>
   <body>
     <a class="skip-link" href="#main">Aller au contenu</a>
@@ -31,14 +31,9 @@
             </svg>
           </span>
           <span>
-            <strong>Nexellia</strong>
-            <small>Bibliothèque de prompts</small>
+            <strong>Bibliothèque de prompts</strong>
           </span>
         </a>
-        <span class="sync-status">
-          <span aria-hidden="true"></span>
-          Synchronisée avec Excel
-        </span>
       </div>
     </header>
 
@@ -77,9 +72,23 @@
               </select>
             </div>
             <div class="filter-control">
+              <label for="module-filter">Module</label>
+              <select id="module-filter">
+                <option value="">Tous les modules</option>
+              </select>
+            </div>
+            <div class="filter-control">
               <label for="competence-filter">Compétence</label>
-              <select id="competence-filter" disabled>
-                <option value="">À renseigner dans Excel</option>
+              <select id="competence-filter">
+                <option value="">Toutes les compétences</option>
+              </select>
+            </div>
+            <div class="filter-control">
+              <label for="sort-order">Trier par</label>
+              <select id="sort-order">
+                <option value="session" selected>Ordre des sessions</option>
+                <option value="source">Ordre du fichier</option>
+                <option value="name">Nom (A–Z)</option>
               </select>
             </div>
             <button class="reset-button" id="reset-filters" type="button" hidden>
@@ -122,7 +131,6 @@
 
     <footer class="site-footer">
       <div class="shell footer-inner">
-        <p>Bibliothèque de formation Nexellia</p>
         <p id="data-version">Source Excel</p>
       </div>
     </footer>

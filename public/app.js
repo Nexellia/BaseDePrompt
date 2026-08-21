@@ -2,13 +2,17 @@ const state = {
   prompts: [],
   query: "",
   session: "",
+  module: "",
   competence: "",
+  sort: "session",
 };
 
 const elements = {
   search: document.querySelector("#search"),
   session: document.querySelector("#session-filter"),
+  module: document.querySelector("#module-filter"),
   competence: document.querySelector("#competence-filter"),
+  sort: document.querySelector("#sort-order"),
   reset: document.querySelector("#reset-filters"),
   emptyReset: document.querySelector("#empty-reset"),
   resultCount: document.querySelector("#result-count"),
@@ -58,6 +62,7 @@ function populateSelect(select, values, firstLabel, formatter = (value) => value
 
 function hydrateFilters() {
   populateSelect(elements.session, uniqueValues("session"), "Toutes les sessions", formatSession);
+  populateSelect(elements.module, uniqueValues("module"), "Tous les modules");
   const competencies = uniqueValues("competence");
   if (competencies.length) {
     elements.competence.disabled = false;
@@ -72,28 +77,44 @@ function readUrlState() {
   const params = new URLSearchParams(location.search);
   state.query = params.get("q") || "";
   state.session = params.get("session") || "";
+  state.module = params.get("module") || "";
   state.competence = params.get("competence") || "";
+  state.sort = ["session", "source", "name"].includes(params.get("sort")) ? params.get("sort") : "session";
   elements.search.value = state.query;
   elements.session.value = state.session;
+  elements.module.value = state.module;
   elements.competence.value = state.competence;
+  elements.sort.value = state.sort;
 }
 
 function writeUrlState() {
   const params = new URLSearchParams();
   if (state.query) params.set("q", state.query);
   if (state.session) params.set("session", state.session);
+  if (state.module) params.set("module", state.module);
   if (state.competence) params.set("competence", state.competence);
+  if (state.sort !== "session") params.set("sort", state.sort);
   const next = params.size ? `${location.pathname}?${params}` : location.pathname;
   history.replaceState(null, "", next);
 }
 
 function getFilteredPrompts() {
   const terms = normalize(state.query).split(" ").filter(Boolean);
-  return state.prompts.filter((prompt) => {
+  const filtered = state.prompts.filter((prompt) => {
     if (state.session && !prompt.session.includes(state.session)) return false;
+    if (state.module && !prompt.module.includes(state.module)) return false;
     if (state.competence && !prompt.competence.includes(state.competence)) return false;
     if (!terms.length) return true;
     return terms.every((term) => prompt.searchText.includes(term));
+  });
+
+  if (state.sort === "source") return filtered;
+
+  return [...filtered].sort((left, right) => {
+    if (state.sort === "name") return naturalSort.compare(left.name, right.name);
+    const leftSession = left.session[0] || "\uffff";
+    const rightSession = right.session[0] || "\uffff";
+    return naturalSort.compare(leftSession, rightSession) || naturalSort.compare(left.name, right.name);
   });
 }
 
@@ -227,6 +248,7 @@ function createPromptItem(prompt) {
   description.textContent = prompt.description || prompt.useCase || "Prompt prêt à utiliser dans votre outil IA.";
 
   prompt.session.slice(0, 2).forEach((value) => addChip(meta, formatSession(value), "is-session"));
+  prompt.module.slice(0, 1).forEach((value) => addChip(meta, value, "is-module"));
   prompt.competence.slice(0, 2).forEach((value) => addChip(meta, value));
   addChip(meta, prompt.niveau);
 
@@ -254,16 +276,18 @@ function renderResults() {
   elements.results.hidden = filtered.length === 0;
   const label = filtered.length === 1 ? "prompt" : "prompts";
   elements.resultCount.innerHTML = `<strong>${filtered.length}</strong> ${label}`;
-  elements.reset.hidden = !(state.query || state.session || state.competence);
+  elements.reset.hidden = !(state.query || state.session || state.module || state.competence);
   writeUrlState();
 }
 
 function resetFilters() {
   state.query = "";
   state.session = "";
+  state.module = "";
   state.competence = "";
   elements.search.value = "";
   elements.session.value = "";
+  elements.module.value = "";
   elements.competence.value = "";
   renderResults();
   elements.search.focus();
@@ -285,8 +309,18 @@ elements.session.addEventListener("change", (event) => {
   renderResults();
 });
 
+elements.module.addEventListener("change", (event) => {
+  state.module = event.target.value;
+  renderResults();
+});
+
 elements.competence.addEventListener("change", (event) => {
   state.competence = event.target.value;
+  renderResults();
+});
+
+elements.sort.addEventListener("change", (event) => {
+  state.sort = event.target.value;
   renderResults();
 });
 
@@ -317,6 +351,7 @@ async function init() {
     state.prompts = data.prompts.map((prompt) => ({
       ...prompt,
       session: prompt.session || [],
+      module: prompt.module || [],
       competence: prompt.competence || [],
       searchText: normalize([
         prompt.name,
@@ -327,6 +362,7 @@ async function init() {
         prompt.objectives,
         prompt.niveau,
         ...(prompt.session || []),
+        ...(prompt.module || []),
         ...(prompt.competence || []),
       ].filter(Boolean).join(" ")),
     }));
